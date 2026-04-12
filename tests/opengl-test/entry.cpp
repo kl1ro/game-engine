@@ -1,48 +1,44 @@
-// This code is generated completely by claude ai, use it at your own risk
-
 #define GL_GLEXT_PROTOTYPES
 #include <GL/gl.h>
 #include <GL/glext.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include <cstdlib>
+#include <fstream>
+#include <sstream>
 #include <string>
+#include <cstdlib>
 
 const int WIDTH  = 800;
 const int HEIGHT = 600;
 
-const char* vertexShaderSrc = R"(
-	#version 330 core
-	layout(location = 0) in vec3 aPos;
-	layout(location = 1) in vec3 aColor;
-	out vec3 vertColor;
-	void main() {
-		gl_Position = vec4(aPos, 1.0);
-		vertColor = aColor;
-	}
-)";
+std::string readFile(const std::string& path) {
+	std::ifstream file(path);
 
-const char* fragmentShaderSrc = R"(
-	#version 330 core
-	in  vec3 vertColor;
-	out vec4 fragColor;
-	void main() {
-		fragColor = vec4(vertColor, 1.0);
+	if (!file.is_open()) {
+		std::cerr << "Failed to open file: " << path << "\n";
+		std::exit(1);
 	}
-)";
 
-GLuint compileShader(GLenum type, const char* src) {
+	std::stringstream buf;
+	buf << file.rdbuf();
+	return buf.str();
+}
+
+GLuint compileShader(GLenum type, const std::string& src) {
+	const char* cstr = src.c_str();
 	GLuint shader = glCreateShader(type);
-	glShaderSource(shader, 1, &src, nullptr);
+	glShaderSource(shader, 1, &cstr, nullptr);
 	glCompileShader(shader);
 	GLint ok;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &ok);
+
 	if (!ok) {
 		char log[512];
 		glGetShaderInfoLog(shader, 512, nullptr, log);
 		std::cerr << "Shader error: " << log << "\n";
 		std::exit(1);
 	}
+
 	return shader;
 }
 
@@ -53,17 +49,20 @@ GLuint linkProgram(GLuint vert, GLuint frag) {
 	glLinkProgram(prog);
 	GLint ok;
 	glGetProgramiv(prog, GL_LINK_STATUS, &ok);
+
 	if (!ok) {
 		char log[512];
 		glGetProgramInfoLog(prog, 512, nullptr, log);
 		std::cerr << "Link error: " << log << "\n";
 		std::exit(1);
 	}
+
 	return prog;
 }
 
 int main() {
 	glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_WAYLAND);
+
 	if (!glfwInit()) {
 		std::cerr << "Failed to init GLFW\n";
 		return 1;
@@ -74,12 +73,15 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "OpenGL Triangle", nullptr, nullptr);
+
 	if (!window) {
 		std::cerr << "Failed to create window\n";
 		glfwTerminate();
 		return 1;
 	}
+
 	glfwMakeContextCurrent(window);
+	glfwSwapInterval(1);
 
 	std::cout << "OpenGL version: " << glGetString(GL_VERSION) << "\n";
 	std::cout << "Renderer:       " << glGetString(GL_RENDERER) << "\n";
@@ -107,13 +109,16 @@ int main() {
 
 	glBindVertexArray(0);
 
-	GLuint vert = compileShader(GL_VERTEX_SHADER,   vertexShaderSrc);
-	GLuint frag = compileShader(GL_FRAGMENT_SHADER, fragmentShaderSrc);
+	// Load shaders from files
+	std::string vertSrc = readFile("tests/opengl-test/vertex.glsl");
+	std::string fragSrc = readFile("tests/opengl-test/fragment.glsl");
+
+	GLuint vert = compileShader(GL_VERTEX_SHADER,   vertSrc);
+	GLuint frag = compileShader(GL_FRAGMENT_SHADER, fragSrc);
 	GLuint prog = linkProgram(vert, frag);
 	glDeleteShader(vert);
 	glDeleteShader(frag);
 
-	// FPS tracking variables
 	double lastTime   = glfwGetTime();
 	int    frameCount = 0;
 
@@ -121,19 +126,17 @@ int main() {
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 			glfwSetWindowShouldClose(window, true);
 
-		// ── FPS counter ───────────────────────────────────────────────────────
-		double now     = glfwGetTime();   // seconds since glfwInit()
+		double now     = glfwGetTime();
 		double elapsed = now - lastTime;
 		frameCount++;
 
-		if (elapsed >= 1.0) {  // update title once per second
+		if (elapsed >= 1.0) {
 			double fps = frameCount / elapsed;
 			std::string title = "OpenGL Triangle  |  FPS: " + std::to_string((int)fps);
 			glfwSetWindowTitle(window, title.c_str());
 			frameCount = 0;
 			lastTime   = now;
 		}
-		// ─────────────────────────────────────────────────────────────────────
 
 		glClearColor(0.08f, 0.08f, 0.10f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);

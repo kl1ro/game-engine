@@ -1,0 +1,22 @@
+{
+  "window": {
+    "width": 800,
+    "height": 600,
+    "title": "OpenGL Basic Triangle"
+  },
+	"triangle": {
+		"vertices":[
+			0.0,  0.6, 0.0,  1.0, 0.2, 0.2,
+			-0.5, -0.4, 0.0,  0.2, 1.0, 0.2,
+			0.5, -0.4, 0.0,  0.2, 0.4, 1.0
+		],
+		"attributes": [
+			{ "index": 0, "size": 3, "offset": 0 },
+			{ "index": 1, "size": 3, "offset": 3 }
+		],
+		"shaders": {
+			"vertex": "shaders/vertex.glsl",
+			"fragment": "shaders/fragment.glsl"
+		}
+	}
+}

@@ -7,21 +7,19 @@ int main() {
 
 	auto config = getConfig();
 	auto window = getWindow(config.window);
-	auto gpuBuffers = getGPUbuffers(config.triangle.attributes);
+	auto gpuBuffers = getGPUbuffers(config.triangle.attributes, config.triangle.shaders);
 	
 	loadVerticesIntoVBO(config.triangle.vertices);
 
-	auto program = getGPUprogram(config.triangle.shaders.vertex, config.triangle.shaders.fragment);
-
-	while (!glfwWindowShouldClose(window)) {
+	while (!glfwWindowShouldClose(window.get())) {
 		clearWindow();
 
-		glUseProgram(program);
+		glUseProgram(gpuBuffers.program);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
-		glfwSwapBuffers(window);
+		glfwSwapBuffers(window.get());
 		glfwPollEvents();
 	}
 
-	terminate(gpuBuffers, program);
+	terminate(gpuBuffers);
 }

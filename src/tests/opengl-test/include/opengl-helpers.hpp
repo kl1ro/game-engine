@@ -2,22 +2,32 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 #include "config.hpp"
+#include "shader.hpp"
 
 struct GPUBuffers {
-  GLuint VAO, VBO;
+  GLuint VAO, VBO, program;
 };
+
+struct GlfwWindowDestroyer {
+	void operator()(GLFWwindow* window) const;
+};
+
+using UniqueGlfwWindow = std::unique_ptr<GLFWwindow, GlfwWindowDestroyer>;
 
 void initializeGLFW();
 
-GLFWwindow* getWindow(WindowConfig config);
+UniqueGlfwWindow getWindow(WindowConfig config);
 
 int getStride(std::vector<VertexAttribute> vertexAttributes);
 
-GPUBuffers getGPUbuffers(std::vector<VertexAttribute> vertexAttributes);
+GPUBuffers getGPUbuffers(
+	std::vector<VertexAttribute> vertexAttributes,
+	ShadersConfig shaders
+);
 
 void loadVerticesIntoVBO(std::vector<float> vertices);
 
-void terminate(GPUBuffers buffers, GLuint program);
+void terminate(GPUBuffers buffers);
 
 void clearWindow(
 	GLclampf red = 0.08f,

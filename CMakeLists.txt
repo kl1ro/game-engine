@@ -37,6 +37,14 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(json)
 
 # -----------------------
+# Custom targets
+# -----------------------
+add_custom_target(soft_clean
+	COMMAND find . -mindepth 1 ! -name '_deps' ! -path '*/_deps/*' -delete
+)
+
+# -----------------------
 # Subdirectories
 # -----------------------
 add_subdirectory(src/tests/opengl-test)
+add_subdirectory(src/tests/quad-test)

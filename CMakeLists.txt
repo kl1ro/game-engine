@@ -36,6 +36,14 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(json)
 
+FetchContent_Declare(
+	stb
+	GIT_REPOSITORY https://github.com/nothings/stb.git
+	GIT_TAG master
+)
+
+FetchContent_MakeAvailable(stb)
+
 # -----------------------
 # Custom targets
 # -----------------------
@@ -48,3 +56,4 @@ add_custom_target(soft_clean
 # -----------------------
 add_subdirectory(src/tests/opengl-test)
 add_subdirectory(src/tests/quad-test)
+add_subdirectory(src/tests/texture-test)

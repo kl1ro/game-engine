@@ -51,6 +51,14 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(stb)
 
+FetchContent_Declare(
+	obj
+	GIT_REPOSITORY https://github.com/tinyobjloader/tinyobjloader
+	GIT_TAG v2.0.0rc13
+)
+
+FetchContent_MakeAvailable(obj)
+
 # -----------------------
 # Custom targets
 # -----------------------
@@ -66,3 +74,4 @@ add_subdirectory(src/tests/quad-test)
 add_subdirectory(src/tests/texture-test)
 add_subdirectory(src/tests/transformation-test)
 add_subdirectory(src/tests/cube-test)
+add_subdirectory(src/tests/obj-test)

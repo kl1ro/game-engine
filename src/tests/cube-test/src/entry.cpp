@@ -11,7 +11,7 @@ int main() {
 	auto window     = getWindow(config.window, moveMouse);
 	auto gpuBuffers = getEmptyGPUbuffers();
 
-	glEnable(GL_DEPTH_TEST);   // 👈 here
+	glEnable(GL_DEPTH_TEST);
   glDisable(GL_CULL_FACE);
 
 	Time& time = Globals::time;

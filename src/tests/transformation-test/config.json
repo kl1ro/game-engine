@@ -1,0 +1,28 @@
+{
+  "window": {
+    "width": 800,
+    "height": 600,
+    "title": "Texture Rendering"
+  },
+	"triangle": {
+  	"vertices": [
+			-0.5,  0.5, 0.0,  0.0, 1.0,
+			0.5,  0.5, 0.0,  1.0, 1.0,
+			-0.5, -0.5, 0.0,  0.0, 0.0,
+			0.5, -0.5, 0.0,  1.0, 0.0
+		], 
+    "indices": [
+			0, 1, 2,
+			1, 3, 2
+    ],
+    "attributes": [
+			{ "index": 0, "size": 3, "offset": 0 },
+			{ "index": 1, "size": 2, "offset": 3 }
+    ],
+    "shaders": {
+			"vertex": "shaders/vertex.glsl",
+			"fragment": "shaders/fragment.glsl"
+    },
+		"textureSrc": "assets/engine.jpg"
+	}
+}

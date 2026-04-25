@@ -33,17 +33,4 @@ void loadAttributesIntoVAO(const std::vector<VertexAttribute>& vertexAttributes)
 void loadVerticesIntoVBO(const std::vector<float>& vertices);
 void loadIndicesIntoEBO(const std::vector<unsigned int>& indices);
 void loadTexture(const std::string& path, const GLuint& buffer);
-
 void terminate();
-
-void clearWindow(
-	GLclampf red = 0.08f,
-	GLclampf green = 0.08f,
-	GLclampf blue = 0.08f,
-	GLclampf alpha = 1.0f
-);
-
-void drawMesh();
-void drawSubmesh(const Submesh& submesh);
-void drawSubmeshWithContext(const Submesh& submesh);
-void drawSubmeshWithMaterial(const Submesh& submesh);

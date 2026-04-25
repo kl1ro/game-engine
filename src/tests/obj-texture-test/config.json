@@ -1,0 +1,18 @@
+{
+  "window": {
+    "width": 1920,
+    "height": 1080,
+    "title": "Object texture test"
+  },
+	"mesh": "assets/Formula 1 mesh.obj",
+  "triangle": {
+    "attributes": [
+      { "index": 0, "size": 3, "offset": 0 },
+      { "index": 1, "size": 2, "offset": 3 }
+    ],
+    "shaders": {
+      "vertex": "shaders/vertex.glsl",
+      "fragment": "shaders/fragment.glsl"
+    }
+  }
+}

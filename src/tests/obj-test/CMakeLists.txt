@@ -9,6 +9,7 @@ add_executable(obj_test
 	src/opengl-helpers.cpp
 	src/shader.cpp
 	src/time.cpp
+	src/render.cpp
 )
 
 target_link_libraries(obj_test PRIVATE

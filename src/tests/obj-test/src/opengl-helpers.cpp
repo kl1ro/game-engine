@@ -9,11 +9,10 @@ void initialize() {
 	}
 
 	auto config = getConfig();
-	getWindow(config.window, moveMouse);
+	GLFWwindow* window = getWindow(config.window);
+	glfwSetCursorPosCallback(window, moveMouse);
 
 	GPUbuffers& gpuBuffers = getEmptyGPUbuffers();
-
-
 
 	gpuBuffers.program = getGPUprogram(
 		config.triangle.shaders.vertex,
@@ -21,13 +20,10 @@ void initialize() {
 	);
 
 	DrawingContext& ctx = Globals::drawingContext;
-	ctx.colorLoc   = glGetUniformLocation(gpuBuffers.program, "color");
+	ctx.colorLoc = glGetUniformLocation(gpuBuffers.program, "color");
 }
 
-GLFWwindow* getWindow(
-	WindowConfig config,
-	GLFWcursorposfun mouseCallback
-) {
+GLFWwindow* getWindow(WindowConfig config) {
 	GLFWwindow*& window = Globals::window;
 	if (window) return window;
 
@@ -53,8 +49,6 @@ GLFWwindow* getWindow(
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glEnable(GL_DEPTH_TEST);
   glDisable(GL_CULL_FACE);
-
-	if (mouseCallback) glfwSetCursorPosCallback(window, mouseCallback);
 
 	std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 	std::cout << "Renderer:       " << glGetString(GL_RENDERER) << std::endl;

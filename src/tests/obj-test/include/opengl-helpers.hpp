@@ -25,10 +25,7 @@ struct DrawingContext {
 
 void initialize();
 
-GLFWwindow* getWindow(
-	WindowConfig config,
-	GLFWcursorposfun mouseCallback = nullptr
-);
+GLFWwindow* getWindow(WindowConfig config);
 
 int getStride(const std::vector<VertexAttribute>& vertexAttributes);
 

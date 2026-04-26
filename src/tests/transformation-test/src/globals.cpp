@@ -5,4 +5,4 @@ namespace Globals {
   Camera camera;
   Time time;
   GLFWwindow* window = nullptr;
-} // namespace Globals
+}

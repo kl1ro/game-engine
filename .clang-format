@@ -10,7 +10,7 @@ BreakBeforeBraces: Attach
 AlwaysBreakAfterReturnType: None
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: Never
-AllowShortLoopsOnASingleLine: false
+AllowShortLoopsOnASingleLine: true
 
 SpaceBeforeParens: ControlStatements
 SpacesInParentheses: false

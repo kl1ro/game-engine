@@ -8,4 +8,4 @@ namespace Globals {
   Config config;
   GPUbuffers gpuBuffers;
   DrawingContext drawingContext;
-} // namespace Globals
+}

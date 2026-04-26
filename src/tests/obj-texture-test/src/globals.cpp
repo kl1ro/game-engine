@@ -10,4 +10,4 @@ namespace Globals {
   DrawingContext drawingContext;
   std::vector<Mesh> meshes;
   std::vector<Material> materials;
-} // namespace Globals
+}

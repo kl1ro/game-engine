@@ -59,16 +59,41 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(obj)
 
+FetchContent_Declare(
+	imgui
+	GIT_REPOSITORY https://github.com/ocornut/imgui.git
+	GIT_TAG docking
+)
+
+FetchContent_MakeAvailable(imgui)
+
 # -----------------------
 # Custom targets
-# -----------------------
+#
 add_custom_target(soft_clean
-	COMMAND find . -mindepth 1 ! -name '_deps' ! -path '*/_deps/*' -delete
+	COMMAND find . -depth -mindepth 1 ! -name '_deps' ! -path '*/_deps/*' -delete
 )
+
+add_library(imgui STATIC
+	${imgui_SOURCE_DIR}/imgui.cpp
+	${imgui_SOURCE_DIR}/imgui_draw.cpp
+	${imgui_SOURCE_DIR}/imgui_tables.cpp
+	${imgui_SOURCE_DIR}/imgui_widgets.cpp
+	${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
+	${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
+)
+
+target_include_directories(imgui PUBLIC
+	${imgui_SOURCE_DIR}
+	${imgui_SOURCE_DIR}/backends
+)
+
+target_link_libraries(imgui PUBLIC glfw OpenGL::GL)
 
 # -----------------------
 # Subdirectories
 # -----------------------
+add_subdirectory(src)
 add_subdirectory(src/tests/opengl-test)
 add_subdirectory(src/tests/quad-test)
 add_subdirectory(src/tests/texture-test)

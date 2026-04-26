@@ -1,0 +1,11 @@
+#pragma once
+
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+
+void renderUI();
+void createFrame();
+void drawFPS();
+void drawToolbar();
+void renderFrame();

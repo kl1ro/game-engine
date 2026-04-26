@@ -9,7 +9,6 @@ BreakBeforeBraces: Attach
 
 AlwaysBreakAfterReturnType: None
 AllowShortFunctionsOnASingleLine: Empty
-AllowShortIfStatementsOnASingleLine: Never
 AllowShortLoopsOnASingleLine: true
 
 SpaceBeforeParens: ControlStatements

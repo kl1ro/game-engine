@@ -1,0 +1,23 @@
+#pragma once
+#define GL_GLEXT_PROTOTYPES
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <GLFW/glfw3.h>
+#include "tiny_obj_loader.h"
+#include "object.hpp"
+#include "opengl-helpers.hpp"
+
+std::string readFile(const std::string& path);
+void loadObj(const std::string& path);
+
+void loadMaterials(
+	const std::string baseDir,
+	const std::vector<tinyobj::material_t>& tinyMaterials
+);
+
+void loadMesh(
+	const std::vector<tinyobj::shape_t>& shapes,
+	const tinyobj::attrib_t& attrib
+);

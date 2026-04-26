@@ -1,32 +1,30 @@
 #include "file.hpp"
-#include "shader.hpp"
 #include "opengl-helpers.hpp"
+#include "shader.hpp"
 
 int main() {
-	initializeGLFW();
+  initializeGLFW();
 
-	auto config = getConfig();
-	auto window = getWindow(config.window);
-	auto gpuBuffers = getEmptyGPUbuffers();
-	
-	loadAttributesIntoVAO(config.triangle.attributes);
-	loadVerticesIntoVBO(config.triangle.vertices);
-	loadIndicesIntoEBO(config.triangle.indices);
+  auto config = getConfig();
+  auto window = getWindow(config.window);
+  auto gpuBuffers = getEmptyGPUbuffers();
 
-	gpuBuffers.program = getGPUprogram(
-		config.triangle.shaders.vertex,
-		config.triangle.shaders.fragment
-	);
+  loadAttributesIntoVAO(config.triangle.attributes);
+  loadVerticesIntoVBO(config.triangle.vertices);
+  loadIndicesIntoEBO(config.triangle.indices);
 
-	while (!glfwWindowShouldClose(window.get())) {
-		clearWindow();
+  gpuBuffers.program =
+    getGPUprogram(config.triangle.shaders.vertex, config.triangle.shaders.fragment);
 
-		glUseProgram(gpuBuffers.program);
-		glDrawElements(GL_TRIANGLES, config.triangle.indices.size(), GL_UNSIGNED_INT, 0);
+  while (!glfwWindowShouldClose(window.get())) {
+    clearWindow();
 
-		glfwSwapBuffers(window.get());
-		glfwPollEvents();
-	}
+    glUseProgram(gpuBuffers.program);
+    glDrawElements(GL_TRIANGLES, config.triangle.indices.size(), GL_UNSIGNED_INT, 0);
 
-	terminate(gpuBuffers);
+    glfwSwapBuffers(window.get());
+    glfwPollEvents();
+  }
+
+  terminate(gpuBuffers);
 }

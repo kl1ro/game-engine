@@ -1,16 +1,17 @@
 #include "render.hpp"
 
 int main() {
-	initialize();
+  initialize();
 
-	Config& config = Globals::config;
-	MeshData mesh = readMesh(config.mesh);
+  Config& config = Globals::config;
+  MeshData mesh = readMesh(config.mesh);
 
-	loadAttributesIntoVAO(config.triangle.attributes);
-	loadVerticesIntoVBO(mesh.vertices);
-	loadIndicesIntoEBO(mesh.indices);
+  loadAttributesIntoVAO(config.triangle.attributes);
+  loadVerticesIntoVBO(mesh.vertices);
+  loadIndicesIntoEBO(mesh.indices);
 
-	while (!glfwWindowShouldClose(Globals::window)) render();
+  while (!glfwWindowShouldClose(Globals::window))
+    render();
 
-	terminate();
+  terminate();
 }

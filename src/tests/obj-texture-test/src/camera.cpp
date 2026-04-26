@@ -1,51 +1,42 @@
 #include "camera.hpp"
+
 #include "globals.hpp"
 
 void Camera::rotate(float xoffset, float yoffset) {
-	yaw   += xoffset;
-	pitch += yoffset;
-	pitch  = glm::clamp(pitch, -89.0f, 89.0f);
+  yaw += xoffset;
+  pitch += yoffset;
+  pitch = glm::clamp(pitch, -89.0f, 89.0f);
 
-	glm::vec3 dir;
-	dir.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-	dir.y = sin(glm::radians(pitch));
-	dir.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-	front = glm::normalize(dir);
+  glm::vec3 dir;
+  dir.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+  dir.y = sin(glm::radians(pitch));
+  dir.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+  front = glm::normalize(dir);
 }
 
 void Camera::refreshMVP() {
-	model = glm::mat4(1.0f);
-	Config& config = Globals::config;
+  model = glm::mat4(1.0f);
+  Config& config = Globals::config;
 
-	view = glm::lookAt(this->pos, this->pos + this->front, this->up);
+  view = glm::lookAt(this->pos, this->pos + this->front, this->up);
 
-	projection = glm::perspective(
-		glm::radians(45.0f),
-		float(config.window.width) / float(config.window.height),
-		0.1f,
-		1000.0f
-	);
+  projection = glm::perspective(
+    glm::radians(45.0f),
+    float(config.window.width) / float(config.window.height),
+    0.1f,
+    1000.0f
+  );
 }
 
 void Camera::uploadMVPtoGPU(GLuint program) {
-	glUniformMatrix4fv(
-		glGetUniformLocation(program, "model"),
-		1,
-		GL_FALSE,
-		glm::value_ptr(model)
-	);
+  glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 
-	glUniformMatrix4fv(
-		glGetUniformLocation(program, "view"),
-		1,
-		GL_FALSE,
-		glm::value_ptr(view)
-	);
+  glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 
-	glUniformMatrix4fv(
-		glGetUniformLocation(program, "projection"),
-		1,
-		GL_FALSE,
-		glm::value_ptr(projection)
-	);
+  glUniformMatrix4fv(
+    glGetUniformLocation(program, "projection"),
+    1,
+    GL_FALSE,
+    glm::value_ptr(projection)
+  );
 }

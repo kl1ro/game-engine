@@ -1,25 +1,25 @@
 #include "file.hpp"
-#include "shader.hpp"
 #include "opengl-helpers.hpp"
+#include "shader.hpp"
 
 int main() {
-	initializeGLFW();
+  initializeGLFW();
 
-	auto config = getConfig();
-	auto window = getWindow(config.window);
-	auto gpuBuffers = getGPUbuffers(config.triangle.attributes, config.triangle.shaders);
-	
-	loadVerticesIntoVBO(config.triangle.vertices);
+  auto config = getConfig();
+  auto window = getWindow(config.window);
+  auto gpuBuffers = getGPUbuffers(config.triangle.attributes, config.triangle.shaders);
 
-	while (!glfwWindowShouldClose(window.get())) {
-		clearWindow();
+  loadVerticesIntoVBO(config.triangle.vertices);
 
-		glUseProgram(gpuBuffers.program);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+  while (!glfwWindowShouldClose(window.get())) {
+    clearWindow();
 
-		glfwSwapBuffers(window.get());
-		glfwPollEvents();
-	}
+    glUseProgram(gpuBuffers.program);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 
-	terminate(gpuBuffers);
+    glfwSwapBuffers(window.get());
+    glfwPollEvents();
+  }
+
+  terminate(gpuBuffers);
 }

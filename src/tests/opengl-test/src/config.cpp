@@ -1,20 +1,21 @@
 #include "config.hpp"
 
 Config getConfig(std::string path) {
-	std::ifstream file(path);
-	nlohmann::json j;
-	file >> j;
+  std::ifstream file(path);
+  nlohmann::json j;
+  file >> j;
 
-	Config cfg;
+  Config cfg;
 
-	cfg.window.width  = j["window"].value("width", 800);
-	cfg.window.height = j["window"].value("height", 600);
-	cfg.window.title  = j["window"].value("title", "OpenGL Triangle");
+  cfg.window.width = j["window"].value("width", 800);
+  cfg.window.height = j["window"].value("height", 600);
+  cfg.window.title = j["window"].value("title", "OpenGL Triangle");
 
-	cfg.triangle.vertices = j["triangle"]["vertices"].get<std::vector<float>>();
-	cfg.triangle.attributes = j["triangle"]["attributes"].get<std::vector<VertexAttribute>>();
-	cfg.triangle.shaders.vertex = j["triangle"]["shaders"].value("vertex", "shaders/vertex.glsl");
-	cfg.triangle.shaders.fragment = j["triangle"]["shaders"].value("fragment", "shaders/fragment.glsl");
+  cfg.triangle.vertices = j["triangle"]["vertices"].get<std::vector<float>>();
+  cfg.triangle.attributes = j["triangle"]["attributes"].get<std::vector<VertexAttribute>>();
+  cfg.triangle.shaders.vertex = j["triangle"]["shaders"].value("vertex", "shaders/vertex.glsl");
+  cfg.triangle.shaders.fragment =
+    j["triangle"]["shaders"].value("fragment", "shaders/fragment.glsl");
 
-	return cfg;
+  return cfg;
 }

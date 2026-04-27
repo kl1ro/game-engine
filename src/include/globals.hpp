@@ -15,6 +15,7 @@ namespace Globals {
 
   extern Camera camera;
   extern ViewMode viewMode;
+  extern DisplayMode displayMode;
 
   extern GLuint program;
   extern DrawingContext drawingContext;

@@ -20,7 +20,7 @@ struct RGBA {
 struct DrawingContext {
   RGBA rgba;
   GLint colorLoc;
-  GLint useTextureLoc;
+  GLint displayModeLoc;
   GLsizei indexCount;
   GLenum mode;
 };

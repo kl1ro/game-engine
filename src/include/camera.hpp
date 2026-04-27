@@ -6,8 +6,8 @@
 #include <glm/gtc/type_ptr.hpp>
 
 struct Camera {
-  glm::vec3 pos = glm::vec3(0.0f, 0.0f, 3.0f);
-  glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f);
+  glm::vec3 pos = glm::vec3(7.36f, 4.96f, 6.93f);
+  glm::vec3 front = glm::normalize(glm::vec3(0.0f) - pos);
   glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
   glm::mat4 model;
   glm::mat4 view;
@@ -22,7 +22,10 @@ struct Camera {
 };
 
 enum class ViewMode { Absolute, Relative };
+enum class DisplayMode { Wireframe, Textured, Shaded };
 
 void toggleViewMode();
 void setViewModeToAbsolute();
 void setViewModeToRelative();
+
+void transitionDisplayMode();

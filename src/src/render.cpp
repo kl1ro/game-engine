@@ -31,6 +31,12 @@ void render() {
   ctx.rgba = {0.5f, 0.5f, 0.5f, 1.0f};
   drawMesh();
 
+  if (Globals::displayMode == DisplayMode::Wireframe) {
+    ctx.mode = GL_LINE;
+    ctx.rgba = {0.2f, 0.2f, 0.2f, 1.0f};
+    drawMesh();
+  }
+
   renderUI();
 
   glfwSwapBuffers(Globals::window);
@@ -51,7 +57,9 @@ void drawSubmesh(const Submesh& submesh) {
   bool materialExists =
     submesh.materialIndex > -1 && submesh.materialIndex < (int)Globals::materials.size();
 
-  if (ctx.mode == GL_LINE || !materialExists)
+  glUniform1i(ctx.displayModeLoc, static_cast<int>(Globals::displayMode));
+
+  if (Globals::displayMode == DisplayMode::Wireframe || !materialExists)
     drawSubmeshWithContext(submesh);
   else
     drawSubmeshWithMaterial(submesh);
@@ -59,8 +67,8 @@ void drawSubmesh(const Submesh& submesh) {
 
 void drawSubmeshWithContext(const Submesh& submesh) {
   DrawingContext& ctx = Globals::drawingContext;
-  glUniform1i(ctx.useTextureLoc, false);
   glUniform4f(ctx.colorLoc, ctx.rgba.r, ctx.rgba.g, ctx.rgba.b, 1.0f);
+  glBindTexture(GL_TEXTURE_2D, 0);
   glBindVertexArray(submesh.buffers.VAO);
   glDrawElements(GL_TRIANGLES, submesh.indices.size(), GL_UNSIGNED_INT, 0);
 }
@@ -70,11 +78,9 @@ void drawSubmeshWithMaterial(const Submesh& submesh) {
   Material& material = Globals::materials[submesh.materialIndex];
 
   if (material.diffuseTexture) {
-    glUniform1i(ctx.useTextureLoc, true);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, material.diffuseTexture);
   } else {
-    glUniform1i(ctx.useTextureLoc, false);
     glm::vec3& rgb = material.diffuseColor;
     glUniform4f(ctx.colorLoc, rgb.r, rgb.g, rgb.b, 1.0f);
   }

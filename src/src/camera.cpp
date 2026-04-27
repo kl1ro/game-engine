@@ -62,3 +62,19 @@ void setViewModeToRelative() {
   Globals::mouse.moved = false;
   ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
 }
+
+void transitionDisplayMode() {
+  DisplayMode& mode = Globals::displayMode;
+
+  switch (mode) {
+  case DisplayMode::Wireframe:
+    mode = DisplayMode::Textured;
+    break;
+  case DisplayMode::Textured:
+    mode = DisplayMode::Shaded;
+    break;
+  case DisplayMode::Shaded:
+    mode = DisplayMode::Wireframe;
+    break;
+  }
+}

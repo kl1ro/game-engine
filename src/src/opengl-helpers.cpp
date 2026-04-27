@@ -24,7 +24,7 @@ void initialize() {
 
   DrawingContext& ctx = Globals::drawingContext;
   ctx.colorLoc = glGetUniformLocation(program, "color");
-  ctx.useTextureLoc = glGetUniformLocation(program, "useTexture");
+  ctx.displayModeLoc = glGetUniformLocation(program, "displayMode");
 }
 
 GLFWwindow* getWindow(WindowConfig config) {

@@ -8,6 +8,7 @@ namespace Globals {
 
   Camera camera;
   ViewMode viewMode = ViewMode::Relative;
+  DisplayMode displayMode = DisplayMode::Wireframe;
 
   GLuint program;
   DrawingContext drawingContext;

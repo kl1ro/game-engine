@@ -3,16 +3,17 @@
 #include "globals.hpp"
 
 void Mouse::moveTo(double xpos, double ypos) {
-  if (!this->moved) {
-    this->prevx = xpos;
-    this->prevy = ypos;
-    this->moved = true;
+  if (!moved) {
+    prevx = xpos;
+    prevy = ypos;
+    moved = true;
+    return;
   }
 
-  this->xoffset = (xpos - this->prevx) * this->sensitivity;
-  this->yoffset = (this->prevy - ypos) * this->sensitivity;
-  this->prevx = xpos;
-  this->prevy = ypos;
+  xoffset = (xpos - prevx) * sensitivity;
+  yoffset = (prevy - ypos) * sensitivity;
+  prevx = xpos;
+  prevy = ypos;
 }
 
 void moveMouse(GLFWwindow*, double xpos, double ypos) {

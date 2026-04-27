@@ -12,8 +12,8 @@ struct Camera {
   glm::mat4 model;
   glm::mat4 view;
   glm::mat4 projection;
-  float yaw = -90.0f;
-  float pitch = 0.0f;
+  float yaw = glm::degrees(atan2(front.z, front.x));
+  float pitch = glm::degrees(asin(front.y));
   float speed = 2.5f;
 
   void rotate(float xoffset, float yoffset);

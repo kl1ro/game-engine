@@ -6,6 +6,10 @@
 
 void renderUI();
 void createFrame();
+
 void drawFPS();
+
 void drawToolbar();
+void drawFilePopover();
+
 void renderFrame();

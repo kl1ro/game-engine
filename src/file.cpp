@@ -119,5 +119,7 @@ void loadMesh(const std::vector<tinyobj::shape_t>& shapes, const tinyobj::attrib
     }
   }
 
-  Globals::meshes.push_back(mesh);
+  Object object;
+  object.mesh = mesh;
+  Globals::scene.objects.push_back(object);
 }

@@ -12,6 +12,7 @@ namespace Globals {
 
   GLuint program;
   DrawingContext drawingContext;
-  std::vector<Mesh> meshes;
+
+  Scene scene;
   std::vector<Material> materials;
 }

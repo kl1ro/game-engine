@@ -1,7 +1,7 @@
 #pragma once
 #include "config.hpp"
 #include "file.hpp"
-#include "object.hpp"
+#include "mesh.hpp"
 #include "shader.hpp"
 #include "stb_image.h"
 #include "vertex-buffers.hpp"
@@ -19,10 +19,14 @@ struct RGBA {
 
 struct DrawingContext {
   RGBA rgba;
+  GLenum mode;
+  GLsizei indexCount;
+
   GLint colorLoc;
   GLint displayModeLoc;
-  GLsizei indexCount;
-  GLenum mode;
+  GLint modelLoc;
+  GLint viewLoc;
+  GLint projectionLoc;
 };
 
 void initialize();
@@ -37,4 +41,5 @@ void loadAttributesIntoVAO(const std::vector<VertexAttribute>& vertexAttributes)
 void loadVerticesIntoVBO(const std::vector<float>& vertices);
 void loadIndicesIntoEBO(const std::vector<unsigned int>& indices);
 void loadTexture(const std::string& path, const GLuint& buffer);
+void loadLightsToGPU();
 void terminate();

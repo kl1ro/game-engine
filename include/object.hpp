@@ -1,14 +1,12 @@
 #pragma once
-#include "vector"
-#include "vertex-buffers.hpp"
+#include "mesh.hpp"
+#include "transform.hpp"
 
-struct Submesh {
-  VertexBuffers buffers;
-  std::vector<float> vertices;
-  std::vector<unsigned int> indices;
-  int materialIndex;
-};
+#include <iostream>
 
-struct Mesh {
-  std::vector<Submesh> submeshes;
+struct Object {
+  std::string name;
+  Mesh mesh;
+  Transform transform;
+  bool selected = false;
 };

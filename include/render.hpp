@@ -1,10 +1,13 @@
 #pragma once
 #include "keyboard.hpp"
+#include "object.hpp"
 #include "opengl-helpers.hpp"
 #include "ui.hpp"
 
 void render();
-void drawMesh();
+void drawScene(const Scene& scene);
+void drawObject(const Object& object);
+void drawMesh(const Mesh& mesh);
 void drawSubmesh(const Submesh& submesh);
 void drawSubmeshWithContext(const Submesh& submesh);
 void drawSubmeshWithMaterial(const Submesh& submesh);

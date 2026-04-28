@@ -14,8 +14,7 @@ void Camera::rotate(float xoffset, float yoffset) {
   front = glm::normalize(dir);
 }
 
-void Camera::refreshMVP() {
-  model = glm::mat4(1.0f);
+void Camera::refreshVP() {
   Config& config = Globals::config;
 
   view = glm::lookAt(this->pos, this->pos + this->front, this->up);
@@ -28,13 +27,11 @@ void Camera::refreshMVP() {
   );
 }
 
-void Camera::uploadMVPtoGPU(GLuint program) {
-  glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-
-  glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+void Camera::uploadVPtoGPU(GLuint program) {
+  glUniformMatrix4fv(Globals::drawingContext.viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 
   glUniformMatrix4fv(
-    glGetUniformLocation(program, "projection"),
+    Globals::drawingContext.projectionLoc,
     1,
     GL_FALSE,
     glm::value_ptr(projection)

@@ -1,5 +1,5 @@
 #pragma once
-#include "object.hpp"
+#include "mesh.hpp"
 #include "opengl-helpers.hpp"
 #include "tiny_obj_loader.h"
 

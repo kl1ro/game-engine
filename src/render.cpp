@@ -13,11 +13,8 @@ void render() {
   glUseProgram(Globals::program);
 
   Camera& camera = Globals::camera;
-  camera.refreshMVP();
-  camera.uploadMVPtoGPU(Globals::program);
-
-  glUniform3f(glGetUniformLocation(Globals::program, "lightPos"), 100.0f, 100.0f, 300.0f);
-  glUniform3f(glGetUniformLocation(Globals::program, "lightColor"), 1.0f, 1.0f, 1.0f);
+  camera.refreshVP();
+  camera.uploadVPtoGPU(Globals::program);
 
   glUniform3f(
     glGetUniformLocation(Globals::program, "viewPos"),
@@ -29,12 +26,12 @@ void render() {
   DrawingContext& ctx = Globals::drawingContext;
   ctx.mode = GL_FILL;
   ctx.rgba = {0.5f, 0.5f, 0.5f, 1.0f};
-  drawMesh();
+  drawScene(Globals::scene);
 
   if (Globals::displayMode == DisplayMode::Wireframe) {
     ctx.mode = GL_LINE;
     ctx.rgba = {0.2f, 0.2f, 0.2f, 1.0f};
-    drawMesh();
+    drawScene(Globals::scene);
   }
 
   renderUI();
@@ -43,12 +40,20 @@ void render() {
   glfwPollEvents();
 }
 
-void drawMesh() {
-  DrawingContext& ctx = Globals::drawingContext;
-  glPolygonMode(GL_FRONT_AND_BACK, ctx.mode);
+void drawScene(const Scene& scene) {
+  loadLightsToGPU();
+  for (auto& object : scene.objects) drawObject(object);
+}
 
-  for (auto& mesh : Globals::meshes)
-    for (auto& submesh : mesh.submeshes) drawSubmesh(submesh);
+void drawObject(const Object& object) {
+  DrawingContext& ctx = Globals::drawingContext;
+  glUniformMatrix4fv(ctx.modelLoc, 1, GL_FALSE, glm::value_ptr(object.transform.matrix));
+  drawMesh(object.mesh);
+}
+
+void drawMesh(const Mesh& mesh) {
+  glPolygonMode(GL_FRONT_AND_BACK, Globals::drawingContext.mode);
+  for (auto& submesh : mesh.submeshes) drawSubmesh(submesh);
 }
 
 void drawSubmesh(const Submesh& submesh) {
@@ -91,5 +96,5 @@ void drawSubmeshWithMaterial(const Submesh& submesh) {
 
 void clearWindow(GLclampf r, GLclampf g, GLclampf b, GLclampf a) {
   glClearColor(r, g, b, a);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }

@@ -25,6 +25,9 @@ void initialize() {
   DrawingContext& ctx = Globals::drawingContext;
   ctx.colorLoc = glGetUniformLocation(program, "color");
   ctx.displayModeLoc = glGetUniformLocation(program, "displayMode");
+  ctx.modelLoc = glGetUniformLocation(program, "model");
+  ctx.viewLoc = glGetUniformLocation(program, "view");
+  ctx.projectionLoc = glGetUniformLocation(program, "projection");
 }
 
 GLFWwindow* getWindow(WindowConfig config) {
@@ -35,6 +38,7 @@ GLFWwindow* getWindow(WindowConfig config) {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  glfwWindowHint(GLFW_STENCIL_BITS, 8);
 
   window = glfwCreateWindow(config.width, config.height, config.title.c_str(), nullptr, nullptr);
 
@@ -128,13 +132,38 @@ void loadTexture(const std::string& path, const GLuint& buffer) {
   stbi_image_free(data);
 }
 
+void loadLightsToGPU() {
+  GLuint& program = Globals::program;
+
+  glUniform1i(glGetUniformLocation(program, "numLights"), Globals::scene.lights.size());
+
+  for (int i = 0; i < Globals::scene.lights.size(); i++) {
+    std::string base = "lights[" + std::to_string(i) + "]";
+    Light& light = Globals::scene.lights[i];
+
+    glUniform3fv(
+      glGetUniformLocation(program, (base + ".position").c_str()),
+      1,
+      glm::value_ptr(light.position)
+    );
+
+    glUniform3fv(
+      glGetUniformLocation(program, (base + ".color").c_str()),
+      1,
+      glm::value_ptr(light.color)
+    );
+
+    glUniform1f(glGetUniformLocation(program, (base + ".intensity").c_str()), light.intensity);
+  }
+}
+
 void terminate() {
   glDeleteProgram(Globals::program);
 
   for (auto& material : Globals::materials) glDeleteTextures(1, &material.diffuseTexture);
 
-  for (auto& mesh : Globals::meshes) {
-    for (auto& submesh : mesh.submeshes) {
+  for (auto& object : Globals::scene.objects) {
+    for (auto& submesh : object.mesh.submeshes) {
       glDeleteVertexArrays(1, &submesh.buffers.VAO);
       glDeleteBuffers(1, &submesh.buffers.VBO);
       glDeleteBuffers(1, &submesh.buffers.EBO);

@@ -3,6 +3,7 @@
 #include "config.hpp"
 #include "material.hpp"
 #include "mouse.hpp"
+#include "scene.hpp"
 #include "time.hpp"
 
 #include <GLFW/glfw3.h>
@@ -19,6 +20,7 @@ namespace Globals {
 
   extern GLuint program;
   extern DrawingContext drawingContext;
-  extern std::vector<Mesh> meshes;
+
+  extern Scene scene;
   extern std::vector<Material> materials;
 }

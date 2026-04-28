@@ -3,9 +3,16 @@
 uniform sampler2D tex;
 uniform int displayMode;
 uniform vec4 color;
-uniform vec3 lightPos;
-uniform vec3 lightColor;
 uniform vec3 viewPos;
+
+struct Light {
+  vec3 position;
+  vec3 color;
+  float intensity;
+};
+
+uniform Light lights[32];
+uniform int numLights = 0;
 
 in vec2 TexCoord;
 in vec3 Normal;
@@ -22,36 +29,36 @@ const float SPECULAR_STRENGTH = 0.5;
 const float SHININESS         = 32.0;
 
 vec3 calcLighting(vec3 baseRGB) {
-	// Ambient
-	vec3 ambient = AMBIENT_STRENGTH * lightColor;
+  vec3 result = vec3(0.0);
+  vec3 norm    = normalize(Normal);
+  vec3 viewDir = normalize(viewPos - FragPos);
 
-	// Diffuse
-	vec3 norm     = normalize(Normal);
-	vec3 lightDir = normalize(lightPos - FragPos);
-	float diff    = max(dot(norm, lightDir), 0.0);
-	vec3 diffuse  = diff * lightColor;
+  for (int i = 0; i < numLights; i++) {
+    vec3 ambient  = AMBIENT_STRENGTH * lights[i].color;
+    vec3 lightDir = normalize(lights[i].position - FragPos);
+    float diff    = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse  = diff * lights[i].color;
+    vec3 halfDir  = normalize(lightDir + viewDir);
+    float spec    = pow(max(dot(norm, halfDir), 0.0), SHININESS);
+    vec3 specular = SPECULAR_STRENGTH * spec * lights[i].color;
+    result += (ambient + diffuse + specular) * lights[i].intensity;
+  }
 
-	// Specular (Blinn-Phong)
-	vec3 viewDir  = normalize(viewPos - FragPos);
-	vec3 halfDir  = normalize(lightDir + viewDir);
-	float spec    = pow(max(dot(norm, halfDir), 0.0), SHININESS);
-	vec3 specular = SPECULAR_STRENGTH * spec * lightColor;
-
-	return (ambient + diffuse + specular) * baseRGB;
+  return result * baseRGB;
 }
 
 void main() {
-	if (displayMode == MODE_WIREFRAME) {
-		FragColor = color;
-		return;
-	}
+  if (displayMode == MODE_WIREFRAME) {
+    FragColor = color;
+    return;
+  }
 
-	vec4 baseColor = (displayMode != MODE_WIREFRAME) ? texture(tex, TexCoord) : color;
+  vec4 baseColor = texture(tex, TexCoord);
 
-	if (displayMode == MODE_TEXTURED) {
-		FragColor = baseColor;
-		return;
-	}
+  if (displayMode == MODE_TEXTURED) {
+    FragColor = baseColor;
+    return;
+  }
 
-	FragColor = vec4(calcLighting(baseColor.rgb), baseColor.a);
+  FragColor = vec4(calcLighting(baseColor.rgb), baseColor.a);
 }

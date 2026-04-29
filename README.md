@@ -9,6 +9,7 @@ Made in C++.
 
 ## Features
 - GLTF/GLB scene loading
+- OBJ import
 - Scene viewer
 - Blinn-Phong lighting with multiple light sources
 - and even move to come!

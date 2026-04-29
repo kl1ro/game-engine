@@ -12,7 +12,7 @@ Made in C++.
 - OBJ import
 - Scene viewer
 - Blinn-Phong lighting with multiple light sources
-- and even move to come!
+- and even more to come!
 
 ## Building
 ```bash

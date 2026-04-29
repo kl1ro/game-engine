@@ -6,15 +6,15 @@
 
 void render();
 void drawScene(const Scene& scene);
-void drawObject(const Object& object);
+void drawObject(const Object& object, glm::mat4 parentMatrix = glm::mat4(1.0f));
 void drawMesh(const Mesh& mesh);
 void drawSubmesh(const Submesh& submesh);
 void drawSubmeshWithContext(const Submesh& submesh);
 void drawSubmeshWithMaterial(const Submesh& submesh);
 
 void clearWindow(
-  GLclampf red = 0.08f,
-  GLclampf green = 0.08f,
-  GLclampf blue = 0.08f,
+  GLclampf red = 0.247f,
+  GLclampf green = 0.247f,
+  GLclampf blue = 0.247f,
   GLclampf alpha = 1.0f
 );

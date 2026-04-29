@@ -24,15 +24,16 @@ void render() {
   );
 
   DrawingContext& ctx = Globals::drawingContext;
-  ctx.mode = GL_FILL;
-  ctx.rgba = {0.5f, 0.5f, 0.5f, 1.0f};
-  drawScene(Globals::scene);
 
-  if (Globals::displayMode == DisplayMode::Wireframe) {
+  if (Globals::displayMode != DisplayMode::Wireframe) {
+    ctx.mode = GL_FILL;
+    ctx.rgba = {0.5f, 0.5f, 0.5f, 1.0f};
+  } else {
     ctx.mode = GL_LINE;
-    ctx.rgba = {0.2f, 0.2f, 0.2f, 1.0f};
-    drawScene(Globals::scene);
+    ctx.rgba = {0.1f, 0.1f, 0.1f, 1.0f};
   }
+
+  drawScene(Globals::scene);
 
   renderUI();
 
@@ -45,10 +46,13 @@ void drawScene(const Scene& scene) {
   for (auto& object : scene.objects) drawObject(object);
 }
 
-void drawObject(const Object& object) {
+void drawObject(const Object& object, glm::mat4 parentMatrix) {
   DrawingContext& ctx = Globals::drawingContext;
-  glUniformMatrix4fv(ctx.modelLoc, 1, GL_FALSE, glm::value_ptr(object.transform.matrix));
+  glm::mat4 worldMatrix = parentMatrix * object.transform.matrix;
+  glUniformMatrix4fv(ctx.modelLoc, 1, GL_FALSE, glm::value_ptr(worldMatrix));
+
   drawMesh(object.mesh);
+  for (auto& child : object.children) drawObject(child, worldMatrix);
 }
 
 void drawMesh(const Mesh& mesh) {

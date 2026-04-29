@@ -8,5 +8,6 @@ struct Object {
   std::string name;
   Mesh mesh;
   Transform transform;
+  std::vector<Object> children;
   bool selected = false;
 };

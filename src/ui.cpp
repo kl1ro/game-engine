@@ -96,12 +96,24 @@ void drawFilePopover() {
   if (ImGui::BeginPopup("file_menu")) {
     if (ImGui::MenuItem("Open")) {
       std::string path = openFileDialog();
-
       if (!path.empty())
-        loadObj(path);
+        Globals::scene = loadScene(path);
     }
 
     ImGui::MenuItem("Save");
+    ImGui::Separator();
+
+    if (ImGui::BeginMenu("Import")) {
+      if (ImGui::MenuItem(".obj")) {
+        std::string path = openFileDialog("*.obj");
+
+        if (!path.empty())
+          loadObj(path);
+      }
+
+      ImGui::EndMenu();
+    }
+
     ImGui::Separator();
 
     if (ImGui::MenuItem("Exit"))

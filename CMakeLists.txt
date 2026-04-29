@@ -60,6 +60,14 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(obj)
 
 FetchContent_Declare(
+  gltf
+  GIT_REPOSITORY https://github.com/syoyo/tinygltf
+  GIT_TAG v2.9.3
+)
+
+FetchContent_MakeAvailable(gltf)
+
+FetchContent_Declare(
 	imgui
 	GIT_REPOSITORY https://github.com/ocornut/imgui.git
 	GIT_TAG docking
@@ -95,6 +103,7 @@ add_executable(engine
 	src/render.cpp
 	src/shader.cpp
 	src/time.cpp
+	src/tiny.cpp
 	src/transform.cpp
 	src/ui.cpp
 )
@@ -105,6 +114,7 @@ target_link_libraries(engine PRIVATE
 	nlohmann_json::nlohmann_json
 	glm::glm
 	tinyobjloader
+	tinygltf
 	imgui
 )
 

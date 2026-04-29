@@ -1,0 +1,26 @@
+# Inspiral
+
+A custom graphics engine made for inspired individuals.
+Made in C++.
+
+![screenshot](screenshots/chess.png)
+
+## Features
+- GLTF/GLB scene loading
+- Scene viewer
+- Blinn-Phong lighting with multiple light sources
+- and even move to come!
+
+## Building
+```bash
+cmake -S . -B build
+cmake --build build --target engine
+```
+
+## Dependencies (are downloaded automatically by cmake script)
+- OpenGL 3.3+
+- GLFW
+- GLM
+- ImGui
+- tinygltf
+  

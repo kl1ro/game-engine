@@ -5,7 +5,7 @@ Made in C++.
 
 ![screenshot](screenshots/f1.png)
 ![screenshot](screenshots/chess.png)
-![screenshot](screenshots/pawn wireframe.png)
+![screenshot](screenshots/pawn-wireframe.png)
 
 ## Features
 - GLTF/GLB scene loading
